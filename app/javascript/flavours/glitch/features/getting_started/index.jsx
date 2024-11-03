@@ -11,37 +11,35 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
 import BookmarksIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
-import ExploreIcon from '@/material-icons/400-24px/explore.svg?react';
-import ModerationIcon from '@/material-icons/400-24px/gavel.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
 import MailIcon from '@/material-icons/400-24px/mail.svg?react';
-import AdministrationIcon from '@/material-icons/400-24px/manufacturing.svg?react';
+import ManufacturingIcon from '@/material-icons/400-24px/manufacturing.svg?react';
 import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
 import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
 import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings-fill.svg?react';
+import TagIcon from '@/material-icons/400-24px/tag.svg?react';
 import { fetchFollowRequests } from 'flavours/glitch/actions/accounts';
 import { fetchLists } from 'flavours/glitch/actions/lists';
 import { openModal } from 'flavours/glitch/actions/modal';
 import Column from 'flavours/glitch/features/ui/components/column';
 import LinkFooter from 'flavours/glitch/features/ui/components/link_footer';
-import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
-import { canManageReports, canViewAdminDashboard } from 'flavours/glitch/permissions';
 import { preferencesLink } from 'flavours/glitch/utils/backend_links';
 
+
 import { me, showTrends } from '../../initial_state';
-import { NavigationBar } from '../compose/components/navigation_bar';
+import NavigationBar from '../compose/components/navigation_bar';
 import ColumnLink from '../ui/components/column_link';
 import ColumnSubheading from '../ui/components/column_subheading';
 
 import TrendsContainer from './containers/trends_container';
 
 const messages = defineMessages({
-  heading: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
+  heading: { id: 'hexst_getting_started.heading', defaultMessage: 'Shortcuts' },
   home_timeline: { id: 'tabs_bar.home', defaultMessage: 'Home' },
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   public_timeline: { id: 'navigation_bar.public_timeline', defaultMessage: 'Federated timeline' },
@@ -52,15 +50,13 @@ const messages = defineMessages({
   direct: { id: 'navigation_bar.direct', defaultMessage: 'Private mentions' },
   bookmarks: { id: 'navigation_bar.bookmarks', defaultMessage: 'Bookmarks' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
-  administration: { id: 'navigation_bar.administration', defaultMessage: 'Administration' },
-  moderation: { id: 'navigation_bar.moderation', defaultMessage: 'Moderation' },
   settings: { id: 'navigation_bar.app_settings', defaultMessage: 'App settings' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
   keyboard_shortcuts: { id: 'navigation_bar.keyboard_shortcuts', defaultMessage: 'Keyboard shortcuts' },
   lists_subheading: { id: 'column_subheading.lists', defaultMessage: 'Lists' },
   misc: { id: 'navigation_bar.misc', defaultMessage: 'Misc' },
-  menu: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
+  menu: { id: 'hexst_getting_started.menu', defaultMessage: '⬣' },
 });
 
 const makeMapStateToProps = () => {
@@ -103,10 +99,14 @@ const badgeDisplay = (number, limit) => {
 };
 
 class GettingStarted extends ImmutablePureComponent {
+
+  static contextTypes = {
+    identity: PropTypes.object,
+  };
+
   static propTypes = {
-    identity: identityContextPropShape,
     intl: PropTypes.object.isRequired,
-    myAccount: ImmutablePropTypes.record,
+    myAccount: ImmutablePropTypes.map,
     columns: ImmutablePropTypes.list,
     multiColumn: PropTypes.bool,
     fetchFollowRequests: PropTypes.func.isRequired,
@@ -123,7 +123,7 @@ class GettingStarted extends ImmutablePureComponent {
 
   componentDidMount () {
     const { fetchFollowRequests } = this.props;
-    const { signedIn } = this.props.identity;
+    const { signedIn } = this.context.identity;
 
     if (!signedIn) {
       return;
@@ -134,7 +134,7 @@ class GettingStarted extends ImmutablePureComponent {
 
   render () {
     const { intl, myAccount, columns, multiColumn, unreadFollowRequests, unreadNotifications, lists, openSettings } = this.props;
-    const { signedIn, permissions } = this.props.identity;
+    const { signedIn } = this.context.identity;
 
     const navItems = [];
     let listItems = [];
@@ -158,7 +158,7 @@ class GettingStarted extends ImmutablePureComponent {
     }
 
     if (showTrends) {
-      navItems.push(<ColumnLink key='explore' icon='explore' iconComponent={ExploreIcon} text={intl.formatMessage(messages.explore)} to='/explore' />);
+      navItems.push(<ColumnLink key='explore' icon='hashtag' iconComponent={TagIcon} text={intl.formatMessage(messages.explore)} to='/explore' />);
     }
 
     if (signedIn) {
@@ -199,9 +199,7 @@ class GettingStarted extends ImmutablePureComponent {
                 {listItems}
                 <ColumnSubheading text={intl.formatMessage(messages.settings_subheading)} />
                 { preferencesLink !== undefined && <ColumnLink icon='cog' iconComponent={SettingsIcon} text={intl.formatMessage(messages.preferences)} href={preferencesLink} /> }
-                <ColumnLink icon='cogs' iconComponent={AdministrationIcon} text={intl.formatMessage(messages.settings)} onClick={openSettings} />
-                {canManageReports(permissions) && <ColumnLink key='moderation' href='/admin/reports' icon='flag' iconComponent={ModerationIcon} text={intl.formatMessage(messages.moderation)} />}
-                {canViewAdminDashboard(permissions) && <ColumnLink key='administration' href='/admin/dashboard' icon='tachometer' iconComponent={AdministrationIcon} text={intl.formatMessage(messages.administration)} />}
+                <ColumnLink icon='cogs' iconComponent={ManufacturingIcon} text={intl.formatMessage(messages.settings)} onClick={openSettings} />
               </>
             )}
           </div>
@@ -221,4 +219,4 @@ class GettingStarted extends ImmutablePureComponent {
 
 }
 
-export default withIdentity(connect(makeMapStateToProps, mapDispatchToProps)(injectIntl(GettingStarted)));
+export default connect(makeMapStateToProps, mapDispatchToProps)(injectIntl(GettingStarted));

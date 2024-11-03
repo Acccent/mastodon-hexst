@@ -10,6 +10,7 @@ import { List as ImmutableList } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
+
 import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
 import ExpandMoreIcon from '@/material-icons/400-24px/expand_more.svg?react';
 import { fetchServer, fetchExtendedDescription, fetchDomainBlocks  } from 'flavours/glitch/actions/server';
@@ -88,7 +89,6 @@ class Section extends PureComponent {
 }
 
 class About extends PureComponent {
-
   static propTypes = {
     server: ImmutablePropTypes.map,
     extendedDescription: ImmutablePropTypes.map,
@@ -122,8 +122,11 @@ class About extends PureComponent {
         <div className='scrollable about'>
           <div className='about__header'>
             <ServerHeroImage blurhash={server.getIn(['thumbnail', 'blurhash'])} src={server.getIn(['thumbnail', 'url'])} srcSet={server.getIn(['thumbnail', 'versions'])?.map((value, key) => `${value} ${key.replace('@', '')}`).join(', ')} className='about__header__hero' />
+            {/*
             <h1>{isLoading ? <Skeleton width='10ch' /> : server.get('domain')}</h1>
             <p><FormattedMessage id='about.powered_by' defaultMessage='Decentralized social media powered by {mastodon}' values={{ mastodon: <a href='https://joinmastodon.org' className='about__mail' target='_blank'>Mastodon</a> }} /></p>
+            */}
+            {extendedDescription.get('isLoading') ? <Skeleton width='100%' /> : <div className='prose' dangerouslySetInnerHTML={{ __html: extendedDescription.get('content') }} />}
           </div>
 
           <div className='about__meta'>
@@ -142,6 +145,7 @@ class About extends PureComponent {
             </div>
           </div>
 
+          {/*
           <Section open title={intl.formatMessage(messages.title)}>
             {extendedDescription.get('isLoading') ? (
               <>
@@ -162,6 +166,7 @@ class About extends PureComponent {
               <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
             ))}
           </Section>
+          */}
 
           <Section title={intl.formatMessage(messages.rules)}>
             {!isLoading && (server.get('rules', ImmutableList()).isEmpty() ? (
@@ -170,15 +175,48 @@ class About extends PureComponent {
               <ol className='rules-list'>
                 {server.get('rules').map(rule => (
                   <li key={rule.get('id')}>
-                    <div className='rules-list__text'>{rule.get('text')}</div>
-                    {rule.get('hint').length > 0 && (<div className='rules-list__hint'>{rule.get('hint')}</div>)}
+                    <span className='rules-list__text'>{rule.get('text')}</span>
                   </li>
                 ))}
               </ol>
             ))}
           </Section>
 
-          <Section title={intl.formatMessage(messages.blocks)} onOpen={this.handleDomainBlocksOpen}>
+          <Section title='Moderation'>
+            <p>
+              If you notice that a member of hex.st is behaving in a way that
+              violates either the core values or rules, or see content from
+              another instance that goes against them, please let the moderators
+              know either via the reporting system (click the "..." on a post
+              and use the "Report..." option) or the admin email address listed
+              above the rules. In particular, to flag issues with other
+              instances, you can also simply tag @admin.
+            </p>
+            <p>
+              Moderators will respond to these reports and/or take precautionary
+              actions at their sole discretion, in the manner they deem
+              appropriate, up to and including expulsion from hex.st and
+              disclosing of the incident to other hex.st members or the general
+              public. However, the identities of any victims will never be made
+              public without their affirmative consent.
+            </p>
+            <p>
+              Such moderation actions can also be taken based on an individual's
+              past behavior, behavior outside hex.st and behavior towards people
+              who are not members of hex.st.
+            </p>
+            <p>
+              The moderation philosophy on hex.st is that while people are
+              capable of positive change and rehabilitation should be
+              encouraged, the safety and well-being of victims and other members
+              of hex.st will always be prioritized.
+            </p>
+          </Section>
+
+          <Section
+            title={intl.formatMessage(messages.blocks)}
+            onOpen={this.handleDomainBlocksOpen}
+          >
             {domainBlocks.get('isLoading') ? (
               <>
                 <Skeleton width='100%' />
@@ -189,32 +227,65 @@ class About extends PureComponent {
               <>
                 <p><FormattedMessage id='about.domain_blocks.preamble' defaultMessage='Mastodon generally allows you to view content from and interact with users from any other server in the fediverse. These are the exceptions that have been made on this particular server.' /></p>
 
-                {domainBlocks.get('items').size > 0 && (
-                  <div className='about__domain-blocks'>
-                    {domainBlocks.get('items').map(block => (
-                      <div className='about__domain-blocks__domain' key={block.get('domain')}>
-                        <div className='about__domain-blocks__domain__header'>
-                          <h6><span title={`SHA-256: ${block.get('digest')}`}>{block.get('domain')}</span></h6>
-                          <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity')].title)}</span>
-                        </div>
-
-                        <p>{(block.get('comment') || '').length > 0 ? block.get('comment') : <FormattedMessage id='about.domain_blocks.no_reason_available' defaultMessage='Reason not available' />}</p>
+                <div className='about__domain-blocks'>
+                  {domainBlocks.get('items').map(block => (
+                    <div className='about__domain-blocks__domain' key={block.get('domain')}>
+                      <div className='about__domain-blocks__domain__header'>
+                        <h6><span title={`SHA-256: ${block.get('digest')}`}>{block.get('domain')}</span></h6>
+                        <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity')].title)}</span>
                       </div>
-                    ))}
-                  </div>
-                )}
+
+                      <p>{(block.get('comment') || '').length > 0 ? block.get('comment') : <FormattedMessage id='about.domain_blocks.no_reason_available' defaultMessage='Reason not available' />}</p>
+                    </div>
+                  ))}
+                </div>
               </>
             ) : (
               <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
             ))}
           </Section>
 
+          <Section title='Acknowledgments'>
+            <p>
+              hex.st runs on{' '}
+              <a href='https://github.com/glitch-soc/mastodon'>Glitch-soc</a>, a
+              fork of{' '}
+              <a href='https://github.com/mastodon/mastodon'>Mastodon</a>.
+              Glitch-soc and Mastodon are free open source software. Mastodon is
+              a trademark of Mastodon gGmbH.
+            </p>
+            <p>
+              The typefaces used across hex.st are{' '}
+              <a href='https://github.com/kosbarts/Commissioner'>
+                Commissionner
+              </a>
+              , <a href='https://github.com/googlefonts/dm-mono'>DM Mono</a> and{' '}
+              <a href='https://github.com/sebsan/Bagnard'>Bagnard</a>, all
+              subject to the{' '}
+              <a href='http://scripts.sil.org/OFL'>SIL Open Font License 1.1</a>
+              .
+            </p>
+            <p>
+              Some of the language used in this page was adapted from{' '}
+              <a href='https://friend.camp/about/more'>Friend Camp's</a> and{' '}
+              <a href='https://bonfirenetworks.org/conduct/'>Bonfire's</a> codes
+              of conduct.
+            </p>
+            <p>
+              Finally, the administrator of hex.st acknowledges that he lives on
+              unceded Indigenous land and recognizes the Kanien’kehá:ka Nation
+              as the custodians of this land.
+            </p>
+          </Section>
+
           <LinkFooter />
 
+          {/*
           <div className='about__footer'>
             <p><FormattedMessage id='about.fork_disclaimer' defaultMessage='Glitch-soc is free open source software forked from Mastodon.' /></p>
             <p><FormattedMessage id='about.disclaimer' defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon gGmbH.' /></p>
           </div>
+          */}
         </div>
 
         <Helmet>

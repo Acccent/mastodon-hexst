@@ -1,0 +1,260 @@
+@import 'flavours/glitch/styles/mixins';
+@import 'extras';
+@import 'fontface';
+@import 'variables';
+
+@import 'flavours/glitch/styles/reset';
+@import 'flavours/glitch/styles/basics';
+@import 'flavours/glitch/styles/branding';
+@import 'flavours/glitch/styles/containers';
+@import 'flavours/glitch/styles/lists';
+@import 'flavours/glitch/styles/modal';
+@import 'flavours/glitch/styles/widgets';
+@import 'flavours/glitch/styles/forms';
+@import 'flavours/glitch/styles/accounts';
+@import 'flavours/glitch/styles/statuses';
+@import 'flavours/glitch/styles/components';
+@import 'flavours/glitch/styles/polls';
+@import 'flavours/glitch/styles/about';
+@import 'flavours/glitch/styles/tables';
+@import 'flavours/glitch/styles/admin';
+@import 'flavours/glitch/styles/accessibility';
+@import 'flavours/glitch/styles/rtl';
+@import 'flavours/glitch/styles/dashboard';
+
+// General
+
+body {
+  background-color: #0e0f15;
+  font-size: 14px;
+}
+
+.button, .btn {
+  font-family: $font-monospace, monospace;
+}
+
+.button.logo-button.button--destructive:not(:active):not(:focus):not(:hover) {
+  font-size: 0;
+
+  &::after {
+    content: "✔ Following";
+    font-size: 14px;
+
+    .layout-multiple-columns & {
+      font-size: 12px;
+    }
+  }
+}
+
+.column-link--transparent.active {
+  font-weight: 600;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+// About
+
+$about-padding: 20px; // Hard-coded in default styles
+
+.about__header {
+  .about__header__hero {
+    margin-right: -$about-padding;
+    margin-top: -$about-padding;
+    margin-left: -$about-padding;
+    width: calc(100% + #{2 * $about-padding});
+    border-radius: 0;
+    aspect-ratio: 1.315;
+    background: center / contain no-repeat $classic-base-color url('~skins/glitch/hexst/about-logo.png');
+
+    & > img {
+      display: none;
+    }
+  }
+
+  .prose {
+    padding: 0 $about-padding;
+  }
+
+  p {
+    text-align: initial;
+    color: $primary-text-color;
+  }
+}
+
+.about__meta {
+  background: none;
+}
+
+.about__section__body {
+  padding:  #{0.5 * $about-padding} $about-padding;
+
+  p {
+    color: $primary-text-color;
+
+    &:not(:last-child) {
+      margin-bottom: 0.8em;
+    }
+  }
+
+  a {
+    color: $highlight-text-color;
+  }
+}
+
+.rules-list li {
+  display: flex;
+  gap: 1em;
+  align-items: start;
+  padding: 1em 0.5em;
+
+  &::before {
+    position: unset;
+    transform: none;
+    flex-shrink: 0;
+  }
+}
+
+.about__domain-blocks__domain p {
+  display: none;
+}
+
+// Compose column
+
+.compose-form .autosuggest-input label .autosuggest-textarea__textarea, .compose-form .autosuggest-textarea label .autosuggest-textarea__textarea {
+  font-size: 16px;
+}
+
+.compose-form textarea {
+  ::-webkit-scrollbar-track {
+    background: lighten($ui-secondary-color, 4%);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: darken($ui-secondary-color, 4%);
+  }
+}
+
+.reply-indicator {
+  background: $classic-base-color;
+
+  .reply-indicator__header > .account.small,
+  .reply-indicator__content {
+    color: $white;
+  }
+
+  .reply-indicator__content a {
+    color: $secondary-text-color;
+  }
+}
+
+.drawer__inner__mastodon {
+  background: none !important;
+
+  & > .mastodon {
+    background: bottom / 100% no-repeat url('~skins/glitch/hexst/compose-logo.png') !important;
+    filter: none !important;
+  }
+}
+
+.wide {
+  .drawer--header {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .drawer__inner {
+    border-radius: 0;
+  }
+}
+
+
+// Other columns
+
+.wide {
+  .columns-area {
+    justify-content: center;
+  }
+
+  .columns-area:not(.columns-area--mobile) .column:not(:last-child) {
+    min-width: 400px;
+    max-width: 600px;
+  }
+}
+
+// Statuses
+
+.status {
+  padding: 16px 14px;
+
+  .status__content {
+    font-size: 16px;
+  }
+
+  .status__avatar {
+    width: 40px;
+    height: 40px;
+
+    .account__avatar, .account__avatar-overlay {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .account__avatar-overlay-base {
+      width: 75% !important;
+      height: 75% !important;
+    }
+
+    .account__avatar-overlay-overlay {
+      width: 50% !important;
+      height: 50% !important;
+    }
+
+    .account__avatar,
+    .account__avatar-overlay,
+    .account__avatar-overlay-base,
+    .account__avatar-overlay-overlay {
+      background-size: 100% !important;
+    }
+  }
+
+  .status__action-bar {
+    margin-top: 12px;
+    transition: opacity 0.1s ease-out;
+
+    &:not(:hover):not(:focus) {
+      opacity: 0.25;
+    }
+  }
+}
+
+.no-reduce-motion .status__collapse-button {
+  .fa-angle-double-up::before {
+    content: "\f106";
+  }
+
+  &.activate {
+    & > .fa-angle-double-up {
+      animation: fade-flip-open 0.5s ease-out forwards;
+    }
+  }
+
+  &.deactivate {
+    & > .fa-angle-double-up {
+      animation: fade-flip-close 0.5s ease-out forwards;
+    }
+  }
+}
+
+// Admin
+
+.form_admin_settings_closed_registrations_message,
+.form_admin_settings_custom_css,
+.form_admin_settings_site_description,
+.form_admin_settings_site_extended_description,
+.form_admin_settings_site_short_description,
+.form_admin_settings_site_terms {
+  textarea {
+    font-family: $font-sans-serif, sans-serif;
+  }
+}
