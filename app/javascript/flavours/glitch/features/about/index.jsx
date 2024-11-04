@@ -10,7 +10,6 @@ import { List as ImmutableList } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-
 import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
 import ExpandMoreIcon from '@/material-icons/400-24px/expand_more.svg?react';
 import { fetchServer, fetchExtendedDescription, fetchDomainBlocks  } from 'flavours/glitch/actions/server';
@@ -89,6 +88,7 @@ class Section extends PureComponent {
 }
 
 class About extends PureComponent {
+
   static propTypes = {
     server: ImmutablePropTypes.map,
     extendedDescription: ImmutablePropTypes.map,
@@ -122,10 +122,6 @@ class About extends PureComponent {
         <div className='scrollable about'>
           <div className='about__header'>
             <ServerHeroImage blurhash={server.getIn(['thumbnail', 'blurhash'])} src={server.getIn(['thumbnail', 'url'])} srcSet={server.getIn(['thumbnail', 'versions'])?.map((value, key) => `${value} ${key.replace('@', '')}`).join(', ')} className='about__header__hero' />
-            {/*
-            <h1>{isLoading ? <Skeleton width='10ch' /> : server.get('domain')}</h1>
-            <p><FormattedMessage id='about.powered_by' defaultMessage='Decentralized social media powered by {mastodon}' values={{ mastodon: <a href='https://joinmastodon.org' className='about__mail' target='_blank'>Mastodon</a> }} /></p>
-            */}
             {extendedDescription.get('isLoading') ? <Skeleton width='100%' /> : <div className='prose' dangerouslySetInnerHTML={{ __html: extendedDescription.get('content') }} />}
           </div>
 
@@ -144,29 +140,6 @@ class About extends PureComponent {
               {isLoading ? <Skeleton width='10ch' /> : <a className='about__mail' href={`mailto:${server.getIn(['contact', 'email'])}`}>{server.getIn(['contact', 'email'])}</a>}
             </div>
           </div>
-
-          {/*
-          <Section open title={intl.formatMessage(messages.title)}>
-            {extendedDescription.get('isLoading') ? (
-              <>
-                <Skeleton width='100%' />
-                <br />
-                <Skeleton width='100%' />
-                <br />
-                <Skeleton width='100%' />
-                <br />
-                <Skeleton width='70%' />
-              </>
-            ) : (extendedDescription.get('content')?.length > 0 ? (
-              <div
-                className='prose'
-                dangerouslySetInnerHTML={{ __html: extendedDescription.get('content') }}
-              />
-            ) : (
-              <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
-            ))}
-          </Section>
-          */}
 
           <Section title={intl.formatMessage(messages.rules)}>
             {!isLoading && (server.get('rules', ImmutableList()).isEmpty() ? (
@@ -225,20 +198,28 @@ class About extends PureComponent {
               </>
             ) : (domainBlocks.get('isAvailable') ? (
               <>
-                <p><FormattedMessage id='about.domain_blocks.preamble' defaultMessage='Mastodon generally allows you to view content from and interact with users from any other server in the fediverse. These are the exceptions that have been made on this particular server.' /></p>
+                <p>
+                  Mastodon allows you to view content from any other server in the fediverse; however, in doing so, you potentially expose all users from <i>your</i> server to that same content. Therefore, to protect members on hex.st, limits have been put in place to prevent communication with servers known to host hateful and harmful messages.
+                </p>
+                <p>
+                  Additionally, some servers have specific goals and rules that make them prone to generating <li>lots</li> of posts – for example, from generative bots. While for the most part there is nothing wrong with this, such servers will still be marked as "limited", so that the content they host doesn't inundate the timelines of members who don't explicitly seek it out.
+                </p>
+                <p>
+                  Finally, as a general rule hex.st will limit communication with a server if it's apparent that its existence is motivated more by the profit of its creators than by the well-being of its users, and of the fediverse at large. This notably includes Threads, the server run by Meta: their past decisions demonstrate a pattern of prioritizing their business above their users' safety and privacy.
+                </p>
 
-                <div className='about__domain-blocks'>
-                  {domainBlocks.get('items').map(block => (
-                    <div className='about__domain-blocks__domain' key={block.get('domain')}>
-                      <div className='about__domain-blocks__domain__header'>
-                        <h6><span title={`SHA-256: ${block.get('digest')}`}>{block.get('domain')}</span></h6>
-                        <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity')].title)}</span>
+                {domainBlocks.get('items').size > 0 && (
+                  <div className='about__domain-blocks'>
+                    {domainBlocks.get('items').map(block => (
+                      <div className='about__domain-blocks__domain' key={block.get('domain')}>
+                        <div className='about__domain-blocks__domain__header'>
+                          <h6><span title={`SHA-256: ${block.get('digest')}`}>{block.get('domain')}</span></h6>
+                          <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity')].title)}</span>
+                        </div>
                       </div>
-
-                      <p>{(block.get('comment') || '').length > 0 ? block.get('comment') : <FormattedMessage id='about.domain_blocks.no_reason_available' defaultMessage='Reason not available' />}</p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </>
             ) : (
               <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
@@ -279,13 +260,6 @@ class About extends PureComponent {
           </Section>
 
           <LinkFooter />
-
-          {/*
-          <div className='about__footer'>
-            <p><FormattedMessage id='about.fork_disclaimer' defaultMessage='Glitch-soc is free open source software forked from Mastodon.' /></p>
-            <p><FormattedMessage id='about.disclaimer' defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon gGmbH.' /></p>
-          </div>
-          */}
         </div>
 
         <Helmet>
