@@ -148,7 +148,7 @@ class About extends PureComponent {
               <ol className='rules-list'>
                 {server.get('rules').map(rule => (
                   <li key={rule.get('id')}>
-                    <span className='rules-list__text'>{rule.get('text')}</span>
+                    <span className='rules-list__text prose'>{rule.get('text')}</span>
                   </li>
                 ))}
               </ol>
@@ -156,34 +156,36 @@ class About extends PureComponent {
           </Section>
 
           <Section title='Moderation'>
-            <p>
-              If you notice that a member of hex.st is behaving in a way that
-              violates either the core values or rules, or see content from
-              another instance that goes against them, please let the moderators
-              know either via the reporting system (click the "..." on a post
-              and use the "Report..." option) or the admin email address listed
-              above the rules. In particular, to flag issues with other
-              instances, you can also simply tag @admin.
-            </p>
-            <p>
-              Moderators will respond to these reports and/or take precautionary
-              actions at their sole discretion, in the manner they deem
-              appropriate, up to and including expulsion from hex.st and
-              disclosing of the incident to other hex.st members or the general
-              public. However, the identities of any victims will never be made
-              public without their affirmative consent.
-            </p>
-            <p>
-              Such moderation actions can also be taken based on an individual's
-              past behavior, behavior outside hex.st and behavior towards people
-              who are not members of hex.st.
-            </p>
-            <p>
-              The moderation philosophy on hex.st is that while people are
-              capable of positive change and rehabilitation should be
-              encouraged, the safety and well-being of victims and other members
-              of hex.st will always be prioritized.
-            </p>
+            <div className='prose'>
+              <p>
+                If you notice that a member of hex.st is behaving in a way that
+                violates either the core values or rules, or see content from
+                another instance that goes against them, please let the moderators
+                know either via the reporting system (click the "..." on a post
+                and use the "Report..." option) or the admin email address listed
+                above the rules. In particular, to flag issues with other
+                instances, you can also simply tag @admin.
+              </p>
+              <p>
+                Moderators will respond to these reports and/or take precautionary
+                actions at their sole discretion, in the manner they deem
+                appropriate, up to and including expulsion from hex.st and
+                disclosing of the incident to other hex.st members or the general
+                public. However, the identities of any victims will never be made
+                public without their affirmative consent.
+              </p>
+              <p>
+                Such moderation actions can also be taken based on an individual's
+                past behavior, behavior outside hex.st and behavior towards people
+                who are not members of hex.st.
+              </p>
+              <p>
+                The moderation philosophy on hex.st is that while people are
+                capable of positive change and rehabilitation should be
+                encouraged, the safety and well-being of victims and other members
+                of hex.st will always be prioritized.
+              </p>
+            </div>
           </Section>
 
           <Section
@@ -198,15 +200,17 @@ class About extends PureComponent {
               </>
             ) : (domainBlocks.get('isAvailable') ? (
               <>
-                <p>
-                  Mastodon allows you to view content from any other server in the fediverse; however, in doing so, you potentially expose all users from <i>your</i> server to that same content. Therefore, to protect members on hex.st, limits have been put in place to prevent communication with servers known to host hateful and harmful messages.
-                </p>
-                <p>
-                  Additionally, some servers have specific goals and rules that make them prone to generating <li>lots</li> of posts – for example, from generative bots. While for the most part there is nothing wrong with this, such servers will still be marked as "limited", so that the content they host doesn't inundate the timelines of members who don't explicitly seek it out.
-                </p>
-                <p>
-                  Finally, as a general rule hex.st will limit communication with a server if it's apparent that its existence is motivated more by the profit of its creators than by the well-being of its users, and of the fediverse at large. This notably includes Threads, the server run by Meta: their past decisions demonstrate a pattern of prioritizing their business above their users' safety and privacy.
-                </p>
+                <div className='prose'>
+                  <p>
+                    Mastodon allows you to view content from any other server in the fediverse; however, in doing so, you potentially expose all users from <i>your</i> server to that same content. Therefore, to protect members on hex.st, limits have been put in place to prevent communication with servers known to host hateful and harmful messages.
+                  </p>
+                  <p>
+                    Additionally, some servers have specific goals and rules that make them prone to generating <i>lots</i> of posts – for example, from generative bots. While for the most part there is nothing wrong with this, such servers will still be marked as "limited", so that the content they host doesn't inundate the timelines of members who don't explicitly seek it out.
+                  </p>
+                  <p>
+                    Finally, as a general rule hex.st will limit communication with a server if it's apparent that its existence is motivated more by the profit of its creators than by the well-being of its users, and of the fediverse at large. This notably includes Threads, the server run by Meta: their past decisions demonstrate a pattern of prioritizing their business above their users' safety and privacy.
+                  </p>
+                </div>
 
                 {domainBlocks.get('items').size > 0 && (
                   <div className='about__domain-blocks'>
@@ -227,36 +231,38 @@ class About extends PureComponent {
           </Section>
 
           <Section title='Acknowledgments'>
-            <p>
-              hex.st runs on{' '}
-              <a href='https://github.com/glitch-soc/mastodon'>Glitch-soc</a>, a
-              fork of{' '}
-              <a href='https://github.com/mastodon/mastodon'>Mastodon</a>.
-              Glitch-soc and Mastodon are free open source software. Mastodon is
-              a trademark of Mastodon gGmbH.
-            </p>
-            <p>
-              The typefaces used across hex.st are{' '}
-              <a href='https://github.com/kosbarts/Commissioner'>
-                Commissionner
-              </a>
-              , <a href='https://github.com/googlefonts/dm-mono'>DM Mono</a> and{' '}
-              <a href='https://github.com/sebsan/Bagnard'>Bagnard</a>, all
-              subject to the{' '}
-              <a href='http://scripts.sil.org/OFL'>SIL Open Font License 1.1</a>
-              .
-            </p>
-            <p>
-              Some of the language used in this page was adapted from{' '}
-              <a href='https://friend.camp/about/more'>Friend Camp's</a> and{' '}
-              <a href='https://bonfirenetworks.org/conduct/'>Bonfire's</a> codes
-              of conduct.
-            </p>
-            <p>
-              Finally, the administrator of hex.st acknowledges that he lives on
-              unceded Indigenous land and recognizes the Kanien’kehá:ka Nation
-              as the custodians of this land.
-            </p>
+            <div className='prose'>
+              <p>
+                hex.st runs on{' '}
+                <a href='https://github.com/glitch-soc/mastodon'>Glitch-soc</a>, a
+                fork of{' '}
+                <a href='https://github.com/mastodon/mastodon'>Mastodon</a>.
+                Glitch-soc and Mastodon are free open source software. Mastodon is
+                a trademark of Mastodon gGmbH.
+              </p>
+              <p>
+                The typefaces used across hex.st are{' '}
+                <a href='https://github.com/kosbarts/Commissioner'>
+                  Commissionner
+                </a>
+                , <a href='https://github.com/googlefonts/dm-mono'>DM Mono</a> and{' '}
+                <a href='https://github.com/sebsan/Bagnard'>Bagnard</a>, all
+                subject to the{' '}
+                <a href='http://scripts.sil.org/OFL'>SIL Open Font License 1.1</a>
+                .
+              </p>
+              <p>
+                Some of the language used in this page was adapted from{' '}
+                <a href='https://friend.camp/about/more'>Friend Camp's</a> and{' '}
+                <a href='https://bonfirenetworks.org/conduct/'>Bonfire's</a> codes
+                of conduct.
+              </p>
+              <p>
+                Finally, the administrator of hex.st acknowledges that he lives on
+                unceded Indigenous land and recognizes the Kanien’kehá:ka Nation
+                as the custodians of this land.
+              </p>
+            </div>
           </Section>
 
           <LinkFooter />

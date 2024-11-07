@@ -34,6 +34,7 @@ body {
 
 .button, .btn {
   font-family: $font-monospace, monospace;
+  font-weight: 450 !important;
 }
 
 .column-link--transparent.active {
@@ -56,9 +57,9 @@ $about-padding: 20px; // Hard-coded in default styles
     width: calc(100% + #{2 * $about-padding});
     border-radius: 0;
     aspect-ratio: 1.315;
-    background: center / contain no-repeat $classic-base-color url('~skins/glitch/hexst/about-logo.png');
+    background: center / contain no-repeat url('~skins/glitch/hexst/about-logo.png');
 
-    & > img {
+    & > * {
       display: none;
     }
   }
@@ -68,29 +69,14 @@ $about-padding: 20px; // Hard-coded in default styles
   }
 
   p {
+    // .prose styling is overridden in about header
     text-align: initial;
-    color: $primary-text-color;
+    color: $secondary-text-color;
   }
-}
-
-.about__meta {
-  background: none;
 }
 
 .about__section__body {
   padding:  #{0.5 * $about-padding} $about-padding;
-
-  p {
-    color: $primary-text-color;
-
-    &:not(:last-child) {
-      margin-bottom: 0.8em;
-    }
-  }
-
-  a {
-    color: $highlight-text-color;
-  }
 }
 
 .rules-list li {
@@ -112,7 +98,7 @@ $about-padding: 20px; // Hard-coded in default styles
 
 // Compose column
 
-.compose-form .autosuggest-input label .autosuggest-textarea__textarea, .compose-form .autosuggest-textarea label .autosuggest-textarea__textarea {
+.compose-form .autosuggest-input .autosuggest-textarea__textarea, .compose-form .autosuggest-textarea .autosuggest-textarea__textarea {
   font-size: 16px;
 }
 
@@ -126,29 +112,15 @@ $about-padding: 20px; // Hard-coded in default styles
   }
 }
 
-.reply-indicator {
-  background: $classic-base-color;
-
-  .reply-indicator__header > .account.small,
-  .reply-indicator__content {
-    color: $white;
-  }
-
-  .reply-indicator__content a {
-    color: $secondary-text-color;
-  }
-}
-
 .drawer__pager {
   border-bottom-left-radius: 0 !important;
 }
 
 .drawer__inner__mastodon {
-  background: none !important;
+  background: bottom / 100% no-repeat url('~skins/glitch/hexst/compose-logo.png') !important;
 
-  & > .mastodon {
-    background: bottom / 100% no-repeat url('~skins/glitch/hexst/compose-logo.png') !important;
-    filter: none !important;
+  & > img {
+    display: none;
   }
 }
 
@@ -199,20 +171,12 @@ $about-padding: 20px; // Hard-coded in default styles
 }
 
 .no-reduce-motion .status__collapse-button {
-  .fa-angle-double-up::before {
-    content: "\f106";
-  }
-
-  &.activate {
-    & > .fa-angle-double-up {
+  &.activate>.icon {
       animation: fade-flip-open 0.5s ease-out forwards;
-    }
   }
 
-  &.deactivate {
-    & > .fa-angle-double-up {
-      animation: fade-flip-close 0.5s ease-out forwards;
-    }
+  &.deactivate>.icon {
+    animation: fade-flip-close 0.5s ease-out forwards;
   }
 }
 
