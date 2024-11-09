@@ -20,6 +20,9 @@ import { Skeleton } from 'flavours/glitch/components/skeleton';
 import Account from 'flavours/glitch/containers/account_container';
 import LinkFooter from 'flavours/glitch/features/ui/components/link_footer';
 
+import PolarIcon from '@/skins/glitch/hexst/donate-icons/polar_logomark.png';
+import KofiIcon from '@/skins/glitch/hexst/donate-icons/kofi_symbol.png';
+
 const messages = defineMessages({
   title: { id: 'column.about', defaultMessage: 'About' },
   rules: { id: 'about.rules', defaultMessage: 'Server rules' },
@@ -141,6 +144,18 @@ class About extends PureComponent {
             </div>
           </div>
 
+          <div className='about__donate'>
+            <h4><span>Support hex.st:</span></h4>
+            <div className='about__donate__buttons'>
+              <a href='https://polar.sh/hexst/' target='_blank' className='about__donate__button button'>
+                <img src={PolarIcon} className='donate-logo polar' alt='Polar logo'></img>Polar
+              </a>
+              <a href='https://ko-fi.com/hexst' target='_blank' className='about__donate__button button'>
+                <img src={KofiIcon} className='donate-logo kofi' alt='Ko-fi logo'></img>Ko-fi
+              </a>
+            </div>
+          </div>
+
           <Section title={intl.formatMessage(messages.rules)}>
             {!isLoading && (server.get('rules', ImmutableList()).isEmpty() ? (
               <p><FormattedMessage id='about.not_available' defaultMessage='This information has not been made available on this server.' /></p>
@@ -230,30 +245,55 @@ class About extends PureComponent {
             ))}
           </Section>
 
+          <Section title='Sustainability'>
+            <div className='prose'>
+              <p>
+                hex.st was created, is maintained and moderated by a single person. (It's me, Robin!) As is the case for any Mastodon instance, and any online service really, this endeavor costs money and time. Here is what the financial breakdown looks like for <b>2024</b>:
+              </p>
+              <ul>
+                <li>Server hosting: $112 (this will decrease significantly in 2025)</li>
+                <li>Domain registration/renewal: ~$23</li>
+                <li>Object storage: ~$126</li>
+                <li><b>Total: ~261 USD</b></li>
+              </ul>
+              <p>
+                Time-wise, maintaining the server requires approximately one day of work whenever I upgrade it to a new version (accounting for breaks in functionality that need to be fixed), and a few days to a week for any more substantial changes like migrating to a new host, enabling new features, or tweaking the appearance of the instance.
+              </p>
+              <p>
+                This, of course, is a significant investment, and any contribution is very welcome – links to donation services are higher up on this page. But as long as these costs do not grow exponentially, the future of the server isn't endangered.
+              </p>
+              <p>
+                If a situation were to arise causing me to be unable to afford maintaining hex.st any longer, I would do everything in my power to provide a sufficient window for members to save their data and migrate their account to another instance – or transfer ownership of this place to a new admin. (Such a person would be thoroughly vetted, with an opportunity for members to voice objections and/or migrate elsewhere as well.)
+              </p>
+              <p>
+                However, it is important to understand that I might not be <i>able</i> to do the above at all, for obvious reasons. This is a compromise you have to accept when joining and using a service run by an individual instead of a corporation.
+              </p>
+            </div>
+          </Section>
+
           <Section title='Acknowledgments'>
             <div className='prose'>
               <p>
-                hex.st runs on{' '}
-                <a href='https://github.com/glitch-soc/mastodon'>Glitch-soc</a>, a
-                fork of{' '}
+                hex.st runs on <a href='https://github.com/glitch-soc/mastodon'>Glitch-soc</a>, a
+                fork of 
                 <a href='https://github.com/mastodon/mastodon'>Mastodon</a>.
                 Glitch-soc and Mastodon are free open source software. Mastodon is
                 a trademark of Mastodon gGmbH.
               </p>
               <p>
-                The typefaces used across hex.st are{' '}
+                The typefaces used across hex.st are 
                 <a href='https://github.com/kosbarts/Commissioner'>
                   Commissionner
                 </a>
-                , <a href='https://github.com/googlefonts/dm-mono'>DM Mono</a> and{' '}
+                , <a href='https://github.com/googlefonts/dm-mono'>DM Mono</a> and 
                 <a href='https://github.com/sebsan/Bagnard'>Bagnard</a>, all
-                subject to the{' '}
+                subject to the 
                 <a href='http://scripts.sil.org/OFL'>SIL Open Font License 1.1</a>
                 .
               </p>
               <p>
-                Some of the language used in this page was adapted from{' '}
-                <a href='https://friend.camp/about/more'>Friend Camp's</a> and{' '}
+                Some of the language used in this page was adapted from 
+                <a href='https://friend.camp/about/more'>Friend Camp's</a> and 
                 <a href='https://bonfirenetworks.org/conduct/'>Bonfire's</a> codes
                 of conduct.
               </p>

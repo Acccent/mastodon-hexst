@@ -32,9 +32,22 @@ body {
   font-size: 14px;
 }
 
+.prose ul > li {
+  // Spacing/positioning on lists is weird by default
+  padding-inline-start: 1.5em;
+
+  &::before {
+    top: 0.7em;
+  }
+}
+
 .button, .btn {
   font-family: $font-monospace, monospace;
   font-weight: 450 !important;
+}
+
+.dropdown-button {
+  border-radius: 4px;
 }
 
 .column-link--transparent.active {
@@ -75,15 +88,19 @@ $about-padding: 20px; // Hard-coded in default styles
   }
 }
 
-.about__section__body {
-  padding:  #{0.5 * $about-padding} $about-padding;
-}
-
 .rules-list li {
   display: flex;
   gap: 1em;
   align-items: start;
   padding: 1em 0.5em;
+
+  &:first-child {
+    padding-top: 0.5em;
+  }
+
+  &:last-child {
+    padding-bottom: 0.5em;
+  }
 
   &::before {
     position: unset;
@@ -94,6 +111,38 @@ $about-padding: 20px; // Hard-coded in default styles
 
 .about__domain-blocks__domain p {
   display: none;
+}
+
+
+// Donation buttons
+
+.about__donate {
+  @extend .about__meta;
+  padding: $about-padding;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about__donate__buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: $about-padding;
+}
+
+.about__donate__button.button {
+  background-color: transparent;
+  border: 1px solid $ui-button-focus-outline-color;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: rgba($action-button-color, 0.15);
+  }
+
+  img {
+    height: 1em;
+  }
 }
 
 // Compose column
