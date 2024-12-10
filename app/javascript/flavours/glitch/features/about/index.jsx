@@ -147,7 +147,7 @@ class About extends PureComponent {
           <div className='about__donate'>
             <h4><span>Support hex.st:</span></h4>
             <div className='about__donate__buttons'>
-              <a href='https://polar.sh/hexst/' target='_blank' className='about__donate__button button'>
+              <a href='https://polar.sh/hexst' target='_blank' className='about__donate__button button'>
                 <img src={PolarIcon} className='donate-logo polar' alt='Polar logo'></img>Polar
               </a>
               <a href='https://ko-fi.com/hexst' target='_blank' className='about__donate__button button'>
