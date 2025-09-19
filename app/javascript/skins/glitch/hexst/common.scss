@@ -1,7 +1,7 @@
-@use '@/flavours/glitch/styles/application';
-@use 'extras';
 @use 'fontface';
 @use 'variables';
+@use '@/flavours/glitch/styles/application' as *;
+@use '@/flavours/glitch/styles/variables' as *;
 
 // General
 
@@ -194,6 +194,50 @@ $about-padding: 20px; // Hard-coded in default styles
     &:not(:hover):not(:focus) {
       opacity: 0.25;
     }
+  }
+}
+
+@keyframes fade-flip-close {
+  0% {
+    opacity: 1;
+    transform: rotate(-180deg) translateY(0) scaleY(1);
+  }
+
+  49% {
+    opacity: 0;
+    transform: rotate(-180deg) translateY(-5px) scaleY(0);
+  }
+
+  51% {
+    opacity: 0;
+    transform: rotate(0) translateY(-5px) scaleY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(0) translateY(0) scaleY(1);
+  }
+}
+
+@keyframes fade-flip-open {
+  0% {
+    opacity: 1;
+    transform: rotate(0) translateY(0) scaleY(1);
+  }
+
+  49% {
+    opacity: 0;
+    transform: rotate(0) translateY(-5px) scaleY(0);
+  }
+
+  51% {
+    opacity: 0;
+    transform: rotate(-180deg) translateY(-5px) scaleY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(-180deg) translateY(0) scaleY(1);
   }
 }
 
