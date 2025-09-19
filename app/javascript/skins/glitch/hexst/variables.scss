@@ -15,12 +15,13 @@ $gold-star: #f9a806,          // Dark Goldenrod
 $classic-base-color: #22232b,         // Midnight Express
 $classic-primary-color: #6c7193,      // Echo Blue
 $classic-secondary-color: #d4d8e9,    // Pattens Blue
-$classic-highlight-color: $blurple-500, // Brand purple
 
-$ui-button-secondary-color: $grey-100,
-$ui-button-secondary-border-color: $grey-100,
-$ui-button-secondary-focus-background-color: $grey-600,
-$ui-button-secondary-focus-color: $white,
+// Replace button secondary colors with shades of grey
+// (have to hardcode because the config map can't reference itself)
+$ui-button-secondary-color: #dadaf3,
+$ui-button-secondary-border-color: #dadaf3,
+$ui-button-secondary-focus-background-color: #4e4c5a,
+$ui-button-secondary-focus-color: #fafbff,
 
 $ui-button-icon-hover-background-color: rgba(255, 138, 250, 40%),
 
