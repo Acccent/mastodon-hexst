@@ -66,7 +66,7 @@ module ApplicationHelper
 
   def provider_sign_in_link(provider)
     label = Devise.omniauth_configs[provider]&.strategy&.display_name.presence || I18n.t("auth.providers.#{provider}", default: provider.to_s.chomp('_oauth2').capitalize)
-    link_to label, omniauth_authorize_path(:user, provider), class: "button button-#{provider}", method: :post
+    link_to label, omniauth_authorize_path(:user, provider), class: "btn button-#{provider}", method: :post
   end
 
   def locale_direction
@@ -102,6 +102,16 @@ module ApplicationHelper
     policy(record).public_send(:"#{action}?")
   end
 
+  def conditional_link_to(condition, name, options = {}, html_options = {}, &block)
+    if condition && !current_page?(block_given? ? name : options)
+      link_to(name, options, html_options, &block)
+    elsif block_given?
+      content_tag(:span, options, html_options, &block)
+    else
+      content_tag(:span, name, html_options)
+    end
+  end
+
   def material_symbol(icon, attributes = {})
     safe_join(
       [
@@ -118,18 +128,6 @@ module ApplicationHelper
 
   def check_icon
     inline_svg_tag 'check.svg'
-  end
-
-  def visibility_icon(status)
-    if status.public_visibility?
-      material_symbol('globe', title: I18n.t('statuses.visibilities.public'))
-    elsif status.unlisted_visibility?
-      material_symbol('lock_open', title: I18n.t('statuses.visibilities.unlisted'))
-    elsif status.private_visibility? || status.limited_visibility?
-      material_symbol('lock', title: I18n.t('statuses.visibilities.private'))
-    elsif status.direct_visibility?
-      material_symbol('alternate_email', title: I18n.t('statuses.visibilities.direct'))
-    end
   end
 
   def interrelationships_icon(relationships, account_id)
@@ -155,11 +153,12 @@ module ApplicationHelper
   end
 
   def body_classes
-    output = body_class_string.split
+    output = []
     output << content_for(:body_classes)
     output << "flavour-#{current_flavour.parameterize}"
     output << "skin-#{current_skin.parameterize}"
     output << 'system-font' if current_account&.user&.setting_system_font_ui
+    output << 'custom-scrollbars' unless current_account&.user&.setting_system_scrollbars_ui
     output << (current_account&.user&.setting_reduce_motion ? 'reduce-motion' : 'no-reduce-motion')
     output << 'rtl' if locale_direction == 'rtl'
     output.compact_blank.join(' ')
@@ -250,23 +249,17 @@ module ApplicationHelper
     I18n.t 'user_mailer.welcome.hashtags_recent_count', people: number_with_delimiter(people), count: people
   end
 
+  def app_store_url_ios
+    'https://apps.apple.com/app/mastodon-for-iphone-and-ipad/id1571998974'
+  end
+
+  def app_store_url_android
+    'https://play.google.com/store/apps/details?id=org.joinmastodon.android'
+  end
+
   # glitch-soc addition to handle the multiple flavors
-  def preload_locale_pack
-    supported_locales = Themes.instance.flavour(current_flavour)['locales']
-    preload_pack_asset "locales/#{current_flavour}/#{I18n.locale}-json.js" if supported_locales.include?(I18n.locale.to_s)
-  end
-
-  def flavoured_javascript_pack_tag(pack_name, **options)
-    javascript_pack_tag("flavours/#{current_flavour}/#{pack_name}", **options)
-  end
-
-  def flavoured_stylesheet_pack_tag(pack_name, **options)
-    stylesheet_pack_tag("flavours/#{current_flavour}/#{pack_name}", **options)
-  end
-
-  def preload_signed_in_js_packs
-    preload_files = Themes.instance.flavour(current_flavour)&.fetch('signed_in_preload', nil) || []
-    safe_join(preload_files.map { |entry| preload_pack_asset entry })
+  def flavoured_vite_typescript_tag(pack_name, **)
+    vite_typescript_tag("#{Themes.instance.flavour(current_flavour)['pack_directory'].delete_prefix('app/javascript/')}/#{pack_name}", **)
   end
 
   private

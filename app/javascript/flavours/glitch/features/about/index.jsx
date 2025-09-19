@@ -3,29 +3,26 @@ import { PureComponent } from 'react';
 
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 
-import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import { List as ImmutableList } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-import ChevronRightIcon from '@/material-icons/400-24px/chevron_right.svg?react';
-import ExpandMoreIcon from '@/material-icons/400-24px/expand_more.svg?react';
 import { fetchServer, fetchExtendedDescription, fetchDomainBlocks  } from 'flavours/glitch/actions/server';
+import { Account } from 'flavours/glitch/components/account';
 import Column from 'flavours/glitch/components/column';
-import { Icon  }  from 'flavours/glitch/components/icon';
 import { ServerHeroImage } from 'flavours/glitch/components/server_hero_image';
 import { Skeleton } from 'flavours/glitch/components/skeleton';
-import Account from 'flavours/glitch/containers/account_container';
-import LinkFooter from 'flavours/glitch/features/ui/components/link_footer';
+import { LinkFooter} from 'flavours/glitch/features/ui/components/link_footer';
+
+import { Section } from './components/section';
+import { RulesSection } from './components/rules';
 
 import PolarIcon from '@/skins/glitch/hexst/donate-icons/polar_logomark.png';
 import KofiIcon from '@/skins/glitch/hexst/donate-icons/kofi_symbol.png';
 
 const messages = defineMessages({
   title: { id: 'column.about', defaultMessage: 'About' },
-  rules: { id: 'about.rules', defaultMessage: 'Server rules' },
   blocks: { id: 'about.blocks', defaultMessage: 'Moderated servers' },
   silenced: { id: 'about.domain_blocks.silenced.title', defaultMessage: 'Limited' },
   silencedExplanation: { id: 'about.domain_blocks.silenced.explanation', defaultMessage: 'You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.' },
@@ -47,53 +44,16 @@ const severityMessages = {
 
 const mapStateToProps = state => ({
   server: state.getIn(['server', 'server']),
+  locale: state.getIn(['meta', 'locale']),
   extendedDescription: state.getIn(['server', 'extendedDescription']),
   domainBlocks: state.getIn(['server', 'domainBlocks']),
 });
-
-class Section extends PureComponent {
-
-  static propTypes = {
-    title: PropTypes.string,
-    children: PropTypes.node,
-    open: PropTypes.bool,
-    onOpen: PropTypes.func,
-  };
-
-  state = {
-    collapsed: !this.props.open,
-  };
-
-  handleClick = () => {
-    const { onOpen } = this.props;
-    const { collapsed } = this.state;
-
-    this.setState({ collapsed: !collapsed }, () => onOpen && onOpen());
-  };
-
-  render () {
-    const { title, children } = this.props;
-    const { collapsed } = this.state;
-
-    return (
-      <div className={classNames('about__section', { active: !collapsed })}>
-        <div className='about__section__title' role='button' tabIndex={0} onClick={this.handleClick}>
-          <Icon id={collapsed ? 'chevron-right' : 'chevron-down'} icon={collapsed ? ChevronRightIcon : ExpandMoreIcon} /> {title}
-        </div>
-
-        {!collapsed && (
-          <div className='about__section__body'>{children}</div>
-        )}
-      </div>
-    );
-  }
-
-}
 
 class About extends PureComponent {
 
   static propTypes = {
     server: ImmutablePropTypes.map,
+    locale: ImmutablePropTypes.string,
     extendedDescription: ImmutablePropTypes.map,
     domainBlocks: ImmutablePropTypes.contains({
       isLoading: PropTypes.bool,
@@ -117,7 +77,7 @@ class About extends PureComponent {
   };
 
   render () {
-    const { multiColumn, intl, server, extendedDescription, domainBlocks } = this.props;
+    const { multiColumn, intl, server, extendedDescription, domainBlocks, locale } = this.props;
     const isLoading = server.get('isLoading');
 
     return (

@@ -2,17 +2,20 @@ import { useCallback } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
+import { isFulfilled, isRejected } from '@reduxjs/toolkit';
+
 import { openURL } from 'flavours/glitch/actions/search';
 import { useAppDispatch } from 'flavours/glitch/store';
 
 const isMentionClick = (element: HTMLAnchorElement) =>
-  element.classList.contains('mention');
+  element.classList.contains('mention') &&
+  !element.classList.contains('hashtag');
 
 const isHashtagClick = (element: HTMLAnchorElement) =>
   element.textContent?.[0] === '#' ||
   element.previousSibling?.textContent?.endsWith('#');
 
-export const useLinks = () => {
+export const useLinks = (skipHashtags?: boolean) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
@@ -28,12 +31,22 @@ export const useLinks = () => {
   );
 
   const handleMentionClick = useCallback(
-    (element: HTMLAnchorElement) => {
-      dispatch(
-        openURL(element.href, history, () => {
+    async (element: HTMLAnchorElement) => {
+      const result = await dispatch(openURL({ url: element.href }));
+
+      if (isFulfilled(result)) {
+        if (result.payload.accounts[0]) {
+          history.push(`/@${result.payload.accounts[0].acct}`);
+        } else if (result.payload.statuses[0]) {
+          history.push(
+            `/@${result.payload.statuses[0].account.acct}/${result.payload.statuses[0].id}`,
+          );
+        } else {
           window.location.href = element.href;
-        }),
-      );
+        }
+      } else if (isRejected(result)) {
+        window.location.href = element.href;
+      }
     },
     [dispatch, history],
   );
@@ -48,13 +61,13 @@ export const useLinks = () => {
 
       if (isMentionClick(target)) {
         e.preventDefault();
-        handleMentionClick(target);
-      } else if (isHashtagClick(target)) {
+        void handleMentionClick(target);
+      } else if (isHashtagClick(target) && !skipHashtags) {
         e.preventDefault();
         handleHashtagClick(target);
       }
     },
-    [handleMentionClick, handleHashtagClick],
+    [skipHashtags, handleMentionClick, handleHashtagClick],
   );
 
   return handleClick;

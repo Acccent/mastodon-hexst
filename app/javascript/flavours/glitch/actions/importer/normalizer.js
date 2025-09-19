@@ -1,14 +1,11 @@
 import escapeTextContentForBrowser from 'escape-html';
 
+import { makeEmojiMap } from 'flavours/glitch/models/custom_emoji';
+
 import emojify from '../../features/emoji/emoji';
 import { autoHideCW } from '../../utils/content_warning';
 
 const domParser = new DOMParser();
-
-const makeEmojiMap = emojis => emojis.reduce((obj, emoji) => {
-  obj[`:${emoji.shortcode}:`] = emoji;
-  return obj;
-}, {});
 
 export function searchTextFromRawStatus (status) {
   const spoilerText   = status.spoiler_text || '';
@@ -24,12 +21,29 @@ export function normalizeFilterResult(result) {
   return normalResult;
 }
 
+function stripQuoteFallback(text) {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = text;
+
+  wrapper.querySelector('.quote-inline')?.remove();
+
+  return wrapper.innerHTML;
+}
+
 export function normalizeStatus(status, normalOldStatus, settings) {
   const normalStatus   = { ...status };
+
   normalStatus.account = status.account.id;
 
   if (status.reblog && status.reblog.id) {
     normalStatus.reblog = status.reblog.id;
+  }
+
+  if (status.quote?.quoted_status ?? status.quote?.quoted_status_id) {
+    normalStatus.quote = {
+      ...status.quote,
+      quoted_status: status.quote.quoted_status?.id ?? status.quote?.quoted_status_id,
+    };
   }
 
   if (status.poll && status.poll.id) {
@@ -72,6 +86,22 @@ export function normalizeStatus(status, normalOldStatus, settings) {
     normalStatus.contentHtml  = emojify(normalStatus.content, emojiMap);
     normalStatus.spoilerHtml  = emojify(escapeTextContentForBrowser(spoilerText), emojiMap);
     normalStatus.hidden       = (spoilerText.length > 0 || normalStatus.sensitive) && autoHideCW(settings, spoilerText);
+
+    // Remove quote fallback link from the DOM so it doesn't mess with paragraph margins
+    if (normalStatus.quote) {
+      normalStatus.contentHtml = stripQuoteFallback(normalStatus.contentHtml);
+    }
+
+    if (normalStatus.url && !(normalStatus.url.startsWith('http://') || normalStatus.url.startsWith('https://'))) {
+      normalStatus.url = null;
+    }
+
+    normalStatus.url ||= normalStatus.uri;
+
+    normalStatus.media_attachments.forEach(item => {
+      if (item.remote_url && !(item.remote_url.startsWith('http://') || item.remote_url.startsWith('https://')))
+        item.remote_url = null;
+    });
   }
 
   if (normalOldStatus) {
@@ -101,37 +131,10 @@ export function normalizeStatusTranslation(translation, status) {
     spoiler_text: translation.spoiler_text,
   };
 
-  return normalTranslation;
-}
-
-export function normalizePoll(poll, normalOldPoll) {
-  const normalPoll = { ...poll };
-  const emojiMap = makeEmojiMap(poll.emojis);
-
-  normalPoll.options = poll.options.map((option, index) => {
-    const normalOption = {
-      ...option,
-      voted: poll.own_votes && poll.own_votes.includes(index),
-      titleHtml: emojify(escapeTextContentForBrowser(option.title), emojiMap),
-    };
-
-    if (normalOldPoll && normalOldPoll.getIn(['options', index, 'title']) === option.title) {
-      normalOption.translation = normalOldPoll.getIn(['options', index, 'translation']);
-    }
-
-    return normalOption;
-  });
-
-  return normalPoll;
-}
-
-export function normalizePollOptionTranslation(translation, poll) {
-  const emojiMap = makeEmojiMap(poll.get('emojis').toJS());
-
-  const normalTranslation = {
-    ...translation,
-    titleHtml: emojify(escapeTextContentForBrowser(translation.title), emojiMap),
-  };
+  // Remove quote fallback link from the DOM so it doesn't mess with paragraph margins
+  if (status.get('quote')) {
+    normalTranslation.contentHtml = stripQuoteFallback(normalTranslation.contentHtml);
+  }
 
   return normalTranslation;
 }

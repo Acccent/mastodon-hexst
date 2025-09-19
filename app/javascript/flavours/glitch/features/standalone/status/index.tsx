@@ -38,7 +38,7 @@ const Embed: React.FC<{ id: string }> = ({ id }) => {
   const dispatchRenderSignal = useRenderSignal();
 
   useEffect(() => {
-    dispatch(fetchStatus(id, false, false));
+    dispatch(fetchStatus(id, { alsoFetchContext: false }));
   }, [dispatch, id]);
 
   const handleToggleHidden = useCallback(() => {
@@ -68,7 +68,7 @@ const Embed: React.FC<{ id: string }> = ({ id }) => {
         className='embed__overlay'
         href={permalink}
         target='_blank'
-        rel='noreferrer noopener'
+        rel='noopener'
         aria-label=''
       />
     </div>
