@@ -1,32 +1,32 @@
 @use "sass:color";
 @use '@/flavours/glitch/styles/variables' with (
 // Commonly used web colors
-$black: #030409,            // Black
-$white: #fafbff,            // White
-$blurple-600: #8d0b87, // Dark pink - replaces Iris
-$blurple-500: #bd28b6, // Hex pink - replaces Brand purple
-$blurple-400: #cf30c7, // Medium pink - replaces Medium slate blue
-$blurple-300: #c55cc0, // Faded pink - replaces Faded Blue
-$grey-600: #4e4c5a, // Trout
-$grey-100: #dadaf3, // Topaz
-$gold-star: #f9a806 !default,        // Dark Goldenrod
+$black: #030409,              // Black
+$white: #fafbff,              // White
+$blurple-600: #8d0b87,        // Dark pink - replaces Iris
+$blurple-500: #bd28b6,        // Hex pink - replaces Brand purple
+$blurple-400: #cf30c7,        // Medium pink - replaces Medium slate blue
+$blurple-300: #c55cc0,        // Faded pink - replaces Faded Blue
+$grey-600: #4e4c5a,           // Trout
+$grey-100: #dadaf3,           // Topaz
+$gold-star: #f9a806,          // Dark Goldenrod
 
 // Values from the classic Mastodon UI
 $classic-base-color: #22232b,         // Midnight Express
 $classic-primary-color: #6c7193,      // Echo Blue
 $classic-secondary-color: #d4d8e9,    // Pattens Blue
-$classic-highlight-color: $blurple-500,    // Brand purple
+$classic-highlight-color: $blurple-500, // Brand purple
 
-$ui-button-secondary-color: $grey-100 !default,
-$ui-button-secondary-border-color: $grey-100 !default,
-$ui-button-secondary-focus-background-color: $grey-600 !default,
-$ui-button-secondary-focus-color: $white !default,
+$ui-button-secondary-color: $grey-100,
+$ui-button-secondary-border-color: $grey-100,
+$ui-button-secondary-focus-background-color: $grey-600,
+$ui-button-secondary-focus-color: $white,
 
-$ui-button-icon-hover-background-color: rgba(255, 138, 250, 40%) !default,
+$ui-button-icon-hover-background-color: rgba(255, 138, 250, 40%),
 
-$font-sans-serif: 'Commissioner' !default,
-$font-display: 'Texturina' !default,
-$font-monospace: 'DM Mono' !default,
+$font-sans-serif: 'Commissioner',
+$font-display: 'Texturina',
+$font-monospace: 'DM Mono',
 );
 
 // @use '@/flavours/glitch/styles/css_variables' with 
