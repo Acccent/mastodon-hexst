@@ -1,29 +1,7 @@
-@import 'flavours/glitch/styles/mixins';
-@import 'extras';
-@import 'fontface';
-@import 'variables';
-
-@import 'flavours/glitch/styles/reset';
-@import 'flavours/glitch/styles/basics';
-@import 'flavours/glitch/styles/branding';
-@import 'flavours/glitch/styles/containers';
-@import 'flavours/glitch/styles/lists';
-@import 'flavours/glitch/styles/widgets';
-@import 'flavours/glitch/styles/forms';
-@import 'flavours/glitch/styles/accounts';
-@import 'flavours/glitch/styles/components';
-@import 'flavours/glitch/styles/polls';
-@import 'flavours/glitch/styles/modal';
-@import 'flavours/glitch/styles/emoji_picker';
-@import 'flavours/glitch/styles/about';
-@import 'flavours/glitch/styles/tables';
-@import 'flavours/glitch/styles/admin';
-@import 'flavours/glitch/styles/dashboard';
-@import 'flavours/glitch/styles/rtl';
-@import 'flavours/glitch/styles/accessibility';
-@import 'flavours/glitch/styles/rich_text';
-@import 'flavours/glitch/styles/glitch_local_settings';
-@import 'flavours/glitch/styles/glitch_doodle';
+@use '@/flavours/glitch/styles/application';
+@use 'extras';
+@use 'fontface';
+@use 'variables';
 
 // General
 
