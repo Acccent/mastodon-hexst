@@ -49,7 +49,7 @@ $about-padding: 20px; // Hard-coded in default styles
     width: calc(100% + #{2 * $about-padding});
     border-radius: 0;
     aspect-ratio: 1.315;
-    background: center / contain no-repeat url('~skins/glitch/hexst/about-logo.png');
+    background: center / contain no-repeat url('./about-logo.png');
 
     & > * {
       display: none;
@@ -145,7 +145,7 @@ $about-padding: 20px; // Hard-coded in default styles
 }
 
 .drawer__inner__mastodon {
-  background: bottom / 100% no-repeat url('~skins/glitch/hexst/compose-logo.png') !important;
+  background: bottom / 100% no-repeat url('./compose-logo.png') !important;
 
   & > img {
     display: none;
