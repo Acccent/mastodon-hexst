@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'fontface';
 @use 'variables';
 @use '@/flavours/glitch/styles/application' as *;
@@ -115,7 +116,7 @@ $about-padding: 20px; // Hard-coded in default styles
   &:hover,
   &:active,
   &:focus {
-    background-color: rgba($action-button-color, 0.15);
+    background-color: color.rgba($action-button-color, 0.15);
   }
 
   img {
@@ -131,11 +132,11 @@ $about-padding: 20px; // Hard-coded in default styles
 
 .compose-form textarea {
   ::-webkit-scrollbar-track {
-    background: lighten($ui-secondary-color, 4%);
+    background: color.adjust($ui-secondary-color, $lightness: 4%);
   }
   
   ::-webkit-scrollbar-thumb {
-    background: darken($ui-secondary-color, 4%);
+    background: color.adjust($ui-secondary-color, $lightness: -4%);
   }
 }
 
