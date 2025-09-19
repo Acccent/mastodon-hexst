@@ -116,7 +116,7 @@ $about-padding: 20px; // Hard-coded in default styles
   &:hover,
   &:active,
   &:focus {
-    background-color: color.rgba($action-button-color, 0.15);
+    background-color: rgba($action-button-color, 0.15);
   }
 
   img {
