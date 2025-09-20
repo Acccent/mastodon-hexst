@@ -16,13 +16,14 @@ import { Skeleton } from 'flavours/glitch/components/skeleton';
 import { LinkFooter} from 'flavours/glitch/features/ui/components/link_footer';
 
 import { Section } from './components/section';
-import { RulesSection } from './components/rules';
+// import { RulesSection } from './components/rules';
 
 import PolarIcon from '@/skins/glitch/hexst/donate-icons/polar_logomark.png';
 import KofiIcon from '@/skins/glitch/hexst/donate-icons/kofi_symbol.png';
 
 const messages = defineMessages({
   title: { id: 'column.about', defaultMessage: 'About' },
+  rules: { id: 'about.rules', defaultMessage: 'Server rules' },
   blocks: { id: 'about.blocks', defaultMessage: 'Moderated servers' },
   silenced: { id: 'about.domain_blocks.silenced.title', defaultMessage: 'Limited' },
   silencedExplanation: { id: 'about.domain_blocks.silenced.explanation', defaultMessage: 'You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.' },
