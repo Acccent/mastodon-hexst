@@ -74,7 +74,7 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
         ))}
       </ol>
 
-      <div className='rules-languages'>
+      {/* <div className='rules-languages'>
         <label htmlFor='language-select'>
           <FormattedMessage
             id='about.language_label'
@@ -92,7 +92,7 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
     </Section>
   );
 };
