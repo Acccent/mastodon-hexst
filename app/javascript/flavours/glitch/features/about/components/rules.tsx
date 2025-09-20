@@ -68,8 +68,8 @@ export const RulesSection: FC<RulesSectionProps> = ({ isLoading = false }) => {
       <ol className='rules-list'>
         {rules.map((rule) => (
           <li key={rule.id}>
-            <div className='rules-list__text'>{rule.text}</div>
-            {!!rule.hint && <div className='rules-list__hint'>{rule.hint}</div>}
+            <div className='rules-list__text prose'>{rule.text}</div>
+            {!!rule.hint && <div className='rules-list__hint prose'>{rule.hint}</div>}
           </li>
         ))}
       </ol>
