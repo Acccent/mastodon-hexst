@@ -1,0 +1,266 @@
+@use 'sass:color';
+@use 'fontface';
+@use 'variables';
+@use '@/flavours/glitch/styles/application' as *;
+@use '@/flavours/glitch/styles/variables' as *;
+
+// General
+
+body {
+  background-color: #0e0f15;
+  font-size: 14px;
+}
+
+.prose ul > li {
+  // Spacing/positioning on lists is weird by default
+  padding-inline-start: 1.5em;
+
+  &::before {
+    top: 0.7em;
+  }
+}
+
+.button, .btn {
+  font-family: $font-monospace, monospace;
+  font-weight: 450 !important;
+}
+
+.dropdown-button {
+  border-radius: 4px;
+}
+
+.column-link--transparent.active {
+  font-weight: 600;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+// About
+
+$about-padding: 20px; // Hard-coded in default styles
+
+.about__header {
+  .about__header__hero {
+    margin-right: -$about-padding;
+    margin-top: -$about-padding;
+    margin-left: -$about-padding;
+    width: calc(100% + #{2 * $about-padding});
+    border-radius: 0;
+    aspect-ratio: 1.315;
+    background: center / contain no-repeat url('./about-logo.png');
+
+    & > * {
+      display: none;
+    }
+  }
+
+  .prose {
+    padding: 0 $about-padding;
+  }
+
+  p {
+    // .prose styling is overridden in about header
+    text-align: initial;
+    color: $secondary-text-color;
+  }
+}
+
+.rules-list li {
+  display: flex;
+  gap: 1em;
+  align-items: start;
+  padding: 1em 0.5em;
+
+  &:first-child {
+    padding-top: 0.5em;
+  }
+
+  &:last-child {
+    padding-bottom: 0.5em;
+  }
+
+  &::before {
+    position: unset;
+    transform: none;
+    flex-shrink: 0;
+  }
+}
+
+.about__domain-blocks__domain p {
+  display: none;
+}
+
+
+// Donation buttons
+
+.about__donate {
+  @extend .about__meta;
+  padding: $about-padding;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about__donate__buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: $about-padding;
+}
+
+.about__donate__button.button {
+  background-color: transparent;
+  border: 1px solid $ui-button-focus-outline-color;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: rgba($action-button-color, 0.15);
+  }
+
+  img {
+    height: 1em;
+  }
+}
+
+// Compose column
+
+.compose-form .autosuggest-input .autosuggest-textarea__textarea, .compose-form .autosuggest-textarea .autosuggest-textarea__textarea {
+  font-size: 16px;
+}
+
+.compose-form textarea {
+  ::-webkit-scrollbar-track {
+    background: color.adjust($ui-secondary-color, $lightness: 4%);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: color.adjust($ui-secondary-color, $lightness: -4%);
+  }
+}
+
+.drawer__pager {
+  border-bottom-left-radius: 0 !important;
+}
+
+.drawer__inner__mastodon {
+  background: bottom / 100% no-repeat url('./compose-logo.png') !important;
+
+  & > img {
+    display: none;
+  }
+}
+
+// Statuses
+
+.status {
+  padding: 16px 14px;
+
+  .status__content {
+    font-size: 16px;
+  }
+
+  .status__avatar {
+    width: 40px;
+    height: 40px;
+
+    .account__avatar, .account__avatar-overlay {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .account__avatar-overlay-base {
+      width: 75% !important;
+      height: 75% !important;
+    }
+
+    .account__avatar-overlay-overlay {
+      width: 50% !important;
+      height: 50% !important;
+    }
+
+    .account__avatar,
+    .account__avatar-overlay,
+    .account__avatar-overlay-base,
+    .account__avatar-overlay-overlay {
+      background-size: 100% !important;
+    }
+  }
+
+  .status__action-bar {
+    margin-top: 12px;
+    transition: opacity 0.1s ease-out;
+
+    &:not(:hover):not(:focus) {
+      opacity: 0.25;
+    }
+  }
+}
+
+@keyframes fade-flip-close {
+  0% {
+    opacity: 1;
+    transform: rotate(-180deg) translateY(0) scaleY(1);
+  }
+
+  49% {
+    opacity: 0;
+    transform: rotate(-180deg) translateY(-5px) scaleY(0);
+  }
+
+  51% {
+    opacity: 0;
+    transform: rotate(0) translateY(-5px) scaleY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(0) translateY(0) scaleY(1);
+  }
+}
+
+@keyframes fade-flip-open {
+  0% {
+    opacity: 1;
+    transform: rotate(0) translateY(0) scaleY(1);
+  }
+
+  49% {
+    opacity: 0;
+    transform: rotate(0) translateY(-5px) scaleY(0);
+  }
+
+  51% {
+    opacity: 0;
+    transform: rotate(-180deg) translateY(-5px) scaleY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(-180deg) translateY(0) scaleY(1);
+  }
+}
+
+.no-reduce-motion .status__collapse-button {
+  &.activate>.icon {
+      animation: fade-flip-open 0.5s ease-out forwards;
+  }
+
+  &.deactivate>.icon {
+    animation: fade-flip-close 0.5s ease-out forwards;
+  }
+}
+
+// Admin
+
+.form_admin_settings_closed_registrations_message,
+.form_admin_settings_custom_css,
+.form_admin_settings_site_description,
+.form_admin_settings_site_extended_description,
+.form_admin_settings_site_short_description,
+.form_admin_settings_site_terms {
+  textarea {
+    font-family: $font-sans-serif, sans-serif;
+  }
+}
